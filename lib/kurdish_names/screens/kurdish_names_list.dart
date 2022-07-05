@@ -13,9 +13,24 @@ class KurdishNamesList extends StatefulWidget {
 class _KurdishNamesListState extends State<KurdishNamesList> {
   final genderList = ['O', 'M', 'F'];
 
-  final limit = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+  final limit = [
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    '20',
+    '30',
+    '50'
+  ];
 
   final sort = ['positive', 'negative'];
+  bool isPositive = true;
 
   final KurdishNamesService _namesService = KurdishNamesService();
 
@@ -33,9 +48,9 @@ class _KurdishNamesListState extends State<KurdishNamesList> {
                 DropdownButton<String>(
                   hint: Text('Gender'),
                   items: genderList.map(buildMenuItem).toList(),
-                  onChanged: (Object? val) {
+                  onChanged: (value) {
                     setState(() {
-                      _namesService.gender = val.toString();
+                      _namesService.gender = value.toString();
                     });
                   },
                 ),
@@ -45,6 +60,12 @@ class _KurdishNamesListState extends State<KurdishNamesList> {
                   onChanged: (value) {
                     setState(() {
                       _namesService.sort = value.toString();
+                      print(value.toString());
+                      if (value.toString() == 'negative') {
+                        isPositive = false;
+                      } else {
+                        isPositive = true;
+                      }
                     });
                   },
                 ),
@@ -80,9 +101,11 @@ class _KurdishNamesListState extends State<KurdishNamesList> {
                         itemCount: snapshot.data!.names.length,
                         itemBuilder: (context, index) {
                           return ExpansionTile(
-                            leading: Text(snapshot
-                                .data!.names[index].positive_votes
-                                .toString()),
+                            leading: Text(isPositive
+                                ? snapshot.data!.names[index].positive_votes
+                                    .toString()
+                                : snapshot.data!.names[index].negative_votes
+                                    .toString()),
                             title: Text(snapshot.data!.names[index].name),
                             children: [Text(snapshot.data!.names[index].desc)],
                           );
