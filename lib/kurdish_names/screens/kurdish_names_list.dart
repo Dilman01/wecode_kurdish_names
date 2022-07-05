@@ -13,7 +13,7 @@ class KurdishNamesList extends StatefulWidget {
 class _KurdishNamesListState extends State<KurdishNamesList> {
   final genderList = ['O', 'M', 'F'];
 
-  final limit = [
+  final List<String> limit = [
     '1',
     '2',
     '3',
@@ -26,7 +26,13 @@ class _KurdishNamesListState extends State<KurdishNamesList> {
     '10',
     '20',
     '30',
-    '50'
+    '40',
+    '50',
+    '60',
+    '70',
+    '80',
+    '90',
+    '100',
   ];
 
   final sort = ['positive', 'negative'];
