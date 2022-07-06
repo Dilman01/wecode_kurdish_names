@@ -1,11 +1,12 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:wecode_kurdish_names/kurdish_names/models/names_data_model.dart';
-import 'package:wecode_kurdish_names/kurdish_names/services/kurdish_names_service.dart';
+import 'package:wecode_kurdish_names/src/models/names_data_model.dart';
+import 'package:wecode_kurdish_names/src/services/kurdish_names_service.dart';
 
 class KurdishNamesList extends StatefulWidget {
+  const KurdishNamesList({super.key});
+
   @override
   State<KurdishNamesList> createState() => _KurdishNamesListState();
 }
@@ -13,7 +14,7 @@ class KurdishNamesList extends StatefulWidget {
 class _KurdishNamesListState extends State<KurdishNamesList> {
   final genderList = ['O', 'M', 'F'];
 
-  final List<String> limit = [
+  final limit = [
     '1',
     '2',
     '3',
@@ -36,23 +37,28 @@ class _KurdishNamesListState extends State<KurdishNamesList> {
   ];
 
   final sort = ['positive', 'negative'];
-  bool isPositive = true;
+
+  var isPositive = true;
 
   final KurdishNamesService _namesService = KurdishNamesService();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Center(
+          child: Text('Kurdish Names'),
+        ),
+      ),
       body: Column(
         children: [
           Container(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 DropdownButton<String>(
-                  hint: Text('Gender'),
+                  hint: const Text('Gender'),
                   items: genderList.map(buildMenuItem).toList(),
                   onChanged: (value) {
                     setState(() {
@@ -61,12 +67,11 @@ class _KurdishNamesListState extends State<KurdishNamesList> {
                   },
                 ),
                 DropdownButton<String>(
-                  hint: Text('Sort By'),
+                  hint: const Text('Sort By'),
                   items: sort.map(buildMenuItem).toList(),
                   onChanged: (value) {
                     setState(() {
                       _namesService.sort = value.toString();
-                      print(value.toString());
                       if (value.toString() == 'negative') {
                         isPositive = false;
                       } else {
@@ -76,7 +81,7 @@ class _KurdishNamesListState extends State<KurdishNamesList> {
                   },
                 ),
                 DropdownButton<String>(
-                  hint: Text('Limit'),
+                  hint: const Text('Limit'),
                   items: limit.map(buildMenuItem).toList(),
                   onChanged: (value) {
                     setState(() {
@@ -89,19 +94,18 @@ class _KurdishNamesListState extends State<KurdishNamesList> {
           ),
           Expanded(
             child: Container(
-              // color: Colors.red,
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Directionality(
                 textDirection: TextDirection.rtl,
                 child: FutureBuilder<KurdishNames>(
                   future: _namesService.fetchListOfNames(),
                   builder: ((context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator();
+                      return const CupertinoActivityIndicator();
                     } else if (snapshot.hasError) {
                       return Text(snapshot.error.toString());
                     } else if (snapshot.data == null) {
-                      return Text('no data');
+                      return const Text('no data');
                     }
                     return ListView.builder(
                         itemCount: snapshot.data!.names.length,
@@ -119,7 +123,6 @@ class _KurdishNamesListState extends State<KurdishNamesList> {
                   }),
                 ),
               ),
-              // child: ,
             ),
           )
         ],
@@ -131,7 +134,7 @@ class _KurdishNamesListState extends State<KurdishNamesList> {
         value: item,
         child: Text(
           item,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),
       );
 }

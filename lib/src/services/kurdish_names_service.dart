@@ -1,5 +1,5 @@
 import 'package:http/http.dart' as http;
-import 'package:wecode_kurdish_names/kurdish_names/models/names_data_model.dart';
+import 'package:wecode_kurdish_names/src/models/names_data_model.dart';
 
 class KurdishNamesService {
   String gender = 'O';
