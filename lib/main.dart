@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wecode_kurdish_names/src/screens/kurdish_names_list.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,8 +11,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: KurdishNamesList(),
+    return MaterialApp(
+      theme: ThemeData(fontFamily: GoogleFonts.notoSansArabic().fontFamily),
+      home: const KurdishNamesList(),
     );
   }
 }

@@ -18,10 +18,6 @@ class KurdishNamesService {
           'sort': sort,
         });
 
-    // http.Response _response = await http
-    //     .get(Uri.parse('https://nawikurdi.com/api?limit=5&gender=F&offset=0'))
-    //     .catchError((err) => print(err));
-
     http.Response _response =
         await http.get(_kudishNamesUri).catchError((err) => print(err));
 

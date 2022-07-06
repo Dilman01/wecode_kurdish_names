@@ -66,8 +66,7 @@ class _KurdishNamesListState extends State<KurdishNamesList> {
                     setState(() {
                       _namesService.sort = value!;
 
-                      isPositive =
-                          value.toString() == 'negative' ? false : true;
+                      isPositive = value == 'negative' ? false : true;
                     });
                   },
                 ),
