@@ -12,29 +12,16 @@ class KurdishNamesList extends StatefulWidget {
 }
 
 class _KurdishNamesListState extends State<KurdishNamesList> {
-  final genderList = ['O', 'M', 'F'];
+  final genderList = ['Both', 'Male', 'Female'];
 
-  final limit = [
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    '10',
-    '20',
-    '30',
-    '40',
-    '50',
-    '60',
-    '70',
-    '80',
-    '90',
-    '100',
-  ];
+  List<String> setLimit() {
+    final List<String> limit = [];
+
+    for (int i = 1; i <= 100; i++) {
+      limit.add('$i');
+    }
+    return limit;
+  }
 
   final sort = ['positive', 'negative'];
 
@@ -62,7 +49,13 @@ class _KurdishNamesListState extends State<KurdishNamesList> {
                   items: genderList.map(buildMenuItem).toList(),
                   onChanged: (value) {
                     setState(() {
-                      _namesService.gender = value.toString();
+                      if (value == 'Both') {
+                        _namesService.gender = 'O';
+                      } else if (value == 'Male') {
+                        _namesService.gender = 'M';
+                      } else if (value == 'Female') {
+                        _namesService.gender = 'F';
+                      }
                     });
                   },
                 ),
@@ -71,21 +64,19 @@ class _KurdishNamesListState extends State<KurdishNamesList> {
                   items: sort.map(buildMenuItem).toList(),
                   onChanged: (value) {
                     setState(() {
-                      _namesService.sort = value.toString();
-                      if (value.toString() == 'negative') {
-                        isPositive = false;
-                      } else {
-                        isPositive = true;
-                      }
+                      _namesService.sort = value!;
+
+                      isPositive =
+                          value.toString() == 'negative' ? false : true;
                     });
                   },
                 ),
                 DropdownButton<String>(
                   hint: const Text('Limit'),
-                  items: limit.map(buildMenuItem).toList(),
+                  items: setLimit().map(buildMenuItem).toList(),
                   onChanged: (value) {
                     setState(() {
-                      _namesService.limit = value.toString();
+                      _namesService.limit = value!;
                     });
                   },
                 ),
@@ -111,11 +102,13 @@ class _KurdishNamesListState extends State<KurdishNamesList> {
                         itemCount: snapshot.data!.names.length,
                         itemBuilder: (context, index) {
                           return ExpansionTile(
-                            leading: Text(isPositive
-                                ? snapshot.data!.names[index].positive_votes
-                                    .toString()
-                                : snapshot.data!.names[index].negative_votes
-                                    .toString()),
+                            leading: Text(
+                              isPositive
+                                  ? snapshot.data!.names[index].positive_votes
+                                      .toString()
+                                  : snapshot.data!.names[index].negative_votes
+                                      .toString(),
+                            ),
                             title: Text(snapshot.data!.names[index].name),
                             children: [Text(snapshot.data!.names[index].desc)],
                           );
